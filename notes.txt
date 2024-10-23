@@ -1,0 +1,20 @@
+using this website for guide on building docker image:
+https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+
+Docker commands used for building, running, and removing old images:
+
+# shutdown all containers and remove them (for prep to build an updated one.)
+docker-compose down -v
+
+# build new containers from Dockerfile/yaml: (but dont run it yet.)
+docker-compose build
+
+#alternatively, build the new containers AND immediately run the containers:
+docker-compose up -d --build
+
+docker-compose exec web python manage.py migrate --noinput
+
+docker-compose -f docker-compose.prod.yml down -v
+docker-compose -f docker-compose.prod.yml up -d --build
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
